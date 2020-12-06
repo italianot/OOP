@@ -25,17 +25,17 @@ public class Company {
         }
 
         //Метод, добавляющий новое место в список - область
-        public void addCar(String name, int speed, int mark, String country) {
+        public void addObl(String name, int size, int mark, String country) {
             //Создаем объект класса Obl
-            Obl oblTmp = new Obl(name, speed, mark, country, peopleCount);
+            Obl oblTmp = new Obl(name, size, mark, country, peopleCount);
             //Добавляем объект в список
             oblList.add(oblTmp);
             System.out.println("Место добавлено");
         }
         //Метод, добавляющий новое место в список - мегаполис
-        public void addExpress(String name, int speed, int weight, String country, int peopleCount, int noise) {
+        public void addMegapolis(String name, int size, int mark, String country, int peopleCount, int noise) {
             //Создаем объект класса Megapolis
-            Megapolis megapolisTmp = new Megapolis(name, speed, weight, country, peopleCount, noise);
+            Megapolis megapolisTmp = new Megapolis(name, size, mark, country, peopleCount, noise);
             //Добавляем объект в список
             cityList.add(megapolisTmp);
             System.out.println("Место добавлено");
@@ -84,7 +84,7 @@ public class Company {
         }
 
         //Метод, возвращающий список всех мест
-        public ArrayList<Place> getCarsList() {
+        public ArrayList<Place> getOblList() {
             return oblList;
         }
         //Метод, возвращающий список всех мест
@@ -94,7 +94,7 @@ public class Company {
         //Метод поиска места
         public Place findPlace(String name, String type) {
             //Объект для хранения необходимого места
-            Place vehicle = null;
+            Place place = null;
 
             ArrayList<Place> list = null;
 
@@ -106,45 +106,45 @@ public class Company {
 
             //Переберем список
             assert list != null;
-            for(Place vehicleTmp : list) {
+            for(Place placeTmp : list) {
                 //Получим имя, полученного объекта
-                String nameTmp = vehicleTmp.getName();
+                String nameTmp = placeTmp.getName();
                 //Если имена совпали, то
                 if (nameTmp.equals(name)) {
                     //Записываем полученный объект
-                    vehicle = vehicleTmp;
+                    place = placeTmp;
                 }
             }
 
-            return vehicle;
+            return place;
         }
 
         public Place findPlace(String name) {
-            Place vehicle = null;
+            Place place = null;
 
-            for (Place vehicleTmp : oblList) {
+            for (Place placeTmp : oblList) {
                 //Получим имя, полученного объекта
-                String nameTmp = vehicleTmp.getName();
+                String nameTmp = placeTmp.getName();
                 //Если имена совпали, то
                 if (nameTmp.equals(name)) {
                     //Записываем полученный объект
-                    vehicle = vehicleTmp;
+                    place = placeTmp;
                 }
             }
 
-            if (vehicle == null) {
-                for (Place vehicleTmp : cityList) {
+            if (place == null) {
+                for (Place placeTmp : cityList) {
                     //Получим имя, полученного объекта
-                    String nameTmp = vehicleTmp.getName();
+                    String nameTmp = placeTmp.getName();
                     //Если имена совпали, то
                     if (nameTmp.equals(name)) {
                         //Записываем полученный объект
-                        vehicle = vehicleTmp;
+                        place = placeTmp;
                     }
                 }
             }
 
-            return vehicle;
+            return place;
         }
         //Метод удаления места
         public void deletePlace(String name, String type) {
@@ -162,13 +162,13 @@ public class Company {
 
             //Переберем список
             assert list != null;
-            for(Place vehicleTmp : list) {
+            for(Place placeTmp : list) {
                 //Получим имя, полученного объекта
-                String nameTmp = vehicleTmp.getName();
+                String nameTmp = placeTmp.getName();
                 //Если имена совпали, то
                 if (nameTmp.equals(name)) {
                     //Получаем номер наденного объекта
-                    index = list.indexOf(vehicleTmp);
+                    index = list.indexOf(placeTmp);
                     //Ставим флаг, что найдено
                     isFind = true;
                 }
@@ -183,41 +183,41 @@ public class Company {
             }
         }
 
-        public void updatePlace(String oldName, String name, int speed, int size, String s, int weight, String color) {
-            Place vehicle = null;
-
-            for(Place vehicleTmp : oblList) {
-                //Получим имя, полученного объекта
-                String nameTmp = vehicleTmp.getName();
-                //Если имена совпали, то
-                if (nameTmp.equals(oldName)) {
-                    //Записываем полученный объект
-                    vehicle = vehicleTmp;
-                }
-            }
-
-            if (vehicle != null) {
-                Object[] object = {name, size, weight, color, peopleCount};
-
-                vehicle.updatePlace(object);
-            }
-        }
-
-        public void updatePlace(String oldName, String name, int size, int weight, String color, int railsCount) {
+        public void updatePlace(String oldName, String name, int size, int mark, String country) {
             Place place = null;
 
-            for(Place vehicleTmp : cityList) {
+            for(Place placeTmp : oblList) {
                 //Получим имя, полученного объекта
-                String nameTmp = vehicleTmp.getName();
+                String nameTmp = placeTmp.getName();
                 //Если имена совпали, то
                 if (nameTmp.equals(oldName)) {
                     //Записываем полученный объект
-                    place = vehicleTmp;
+                    place = placeTmp;
                 }
             }
 
             if (place != null) {
-                Object[] object = {name, size, weight, color, railsCount, noise};
+                Object[] object = {name, size, mark, country, peopleCount};
+
+                place.updatePlace(object);
+            }
+        }
+
+        public void updatePlace(String oldName, String name, int size, int mark, String country, int railsCount) {
+            Place place = null;
+
+            for(Place placeTmp : cityList) {
+                //Получим имя, полученного объекта
+                String nameTmp = placeTmp.getName();
+                //Если имена совпали, то
+                if (nameTmp.equals(oldName)) {
+                    //Записываем полученный объект
+                    place = placeTmp;
+                }
+            }
+
+            if (place != null) {
+                Object[] object = {name, size, mark, country, railsCount, noise};
 
                 place.updatePlace(object);
             }

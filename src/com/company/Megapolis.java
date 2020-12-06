@@ -5,9 +5,9 @@ public class Megapolis extends City {
     private int noise;
 
     //Стандартный конструктор
-    public Megapolis(String name, int size, int weight, String color, int peopleCount, int noise) {
+    public Megapolis(String name, int size, int mark, String country, int peopleCount, int noise) {
         //Передаем параметры в конструктор родителя
-        super(name, size, weight, color, peopleCount);
+        super(name, size, mark, country, peopleCount);
         //Заполняем поля этого класса
         this.noise = noise;
     }

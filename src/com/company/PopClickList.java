@@ -20,9 +20,9 @@ class PopClickListener extends MouseAdapter {
         int activeTable = ListPanel.getActiveTable();
 
         if (activeTable == 0) {
-            table = ListPanel.getCarsTable();
+            table = ListPanel.getOblTable();
         } else if (activeTable == 1) {
-            table = ListPanel.getExpressTable();
+            table = ListPanel.getCityTable();
         }
 
         assert table != null;

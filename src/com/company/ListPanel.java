@@ -17,12 +17,12 @@ public class ListPanel extends JPanel {
     //Необходимые поля
     private int buttonCount = 0;
     private final JPanel tablePanel = new JPanel();
-    private static final JTable carsTable = new JTable();
-    private static final JTable expressTable = new JTable();
-    private final JTextField carsTableFilterTextField = new JTextField();
-    private final JTextField expressTableFilterTextField = new JTextField();
-    private JRadioButton carsRadioButton;
-    private JRadioButton expressRadioButton;
+    private static final JTable oblTable = new JTable();
+    private static final JTable cityTable = new JTable();
+    private final JTextField oblTableFilterTextField = new JTextField();
+    private final JTextField cityTableFilterTextField = new JTextField();
+    private JRadioButton oblRadioButton;
+    private JRadioButton cityRadioButton;
     private static int activeTable;
     private static JLabel title;
 
@@ -36,12 +36,12 @@ public class ListPanel extends JPanel {
         return activeTable;
     }
 
-    public static JTable getCarsTable() {
-        return carsTable;
+    public static JTable getOblTable() {
+        return oblTable;
     }
 
-    public static JTable getExpressTable() {
-        return expressTable;
+    public static JTable getCityTable() {
+        return cityTable;
     }
 
     //Метод задающий стандартные настройки для панели
@@ -81,8 +81,8 @@ public class ListPanel extends JPanel {
         pane.add(title, c);
 
         tablePanel.setLayout(new CardLayout(0, 0));
-        tablePanel.add(addTableToPanel("OBL", carsTable), "OblTable");
-        tablePanel.add(addTableToPanel("CITY", expressTable), "CityTable");
+        tablePanel.add(addTableToPanel("OBL", oblTable), "OblTable");
+        tablePanel.add(addTableToPanel("CITY", cityTable), "CityTable");
         tablePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
         c.fill = GridBagConstraints.BOTH;
@@ -104,10 +104,10 @@ public class ListPanel extends JPanel {
             AddPanel.clearFields();
 
 
-            if (carsRadioButton.isSelected()) {
+            if (oblRadioButton.isSelected()) {
                 AddPanel.setSelected(0);
             }
-            else if (expressRadioButton.isSelected()) {
+            else if (cityRadioButton.isSelected()) {
                 AddPanel.setSelected(1);
             }
 
@@ -149,30 +149,30 @@ public class ListPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 4;
         addSortToPane();
-        panel.add(carsTableFilterTextField, c);
+        panel.add(oblTableFilterTextField, c);
 
-        expressTableFilterTextField.setVisible(false);
-        panel.add(expressTableFilterTextField, c);
+        cityTableFilterTextField.setVisible(false);
+        panel.add(cityTableFilterTextField, c);
 
-        carsTable.addMouseListener(new PopClickListener());
+        oblTable.addMouseListener(new PopClickListener());
 
         buttonGroup = new ButtonGroup();
 
-        carsRadioButton = new JRadioButton("Области", true);
-        carsRadioButton.setBackground(Color.decode("#ffffff"));
-        carsRadioButton.setHorizontalAlignment(SwingConstants.LEFT);
-        carsRadioButton.addActionListener(new ActionListener() {
+        oblRadioButton = new JRadioButton("Области", true);
+        oblRadioButton.setBackground(Color.decode("#ffffff"));
+        oblRadioButton.setHorizontalAlignment(SwingConstants.LEFT);
+        oblRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 CardLayout cardLayout = (CardLayout) tablePanel.getLayout();
                 cardLayout.show(tablePanel, "OblTable");
-                carsTableFilterTextField.setVisible(true);
-                expressTableFilterTextField.setVisible(false);
-                carsTable.addMouseListener(new PopClickListener());
+                oblTableFilterTextField.setVisible(true);
+                cityTableFilterTextField.setVisible(false);
+                oblTable.addMouseListener(new PopClickListener());
                 activeTable = 0;
             }
         });
-        buttonGroup.add(carsRadioButton);
+        buttonGroup.add(oblRadioButton);
 
         label = new JLabel("Выбрать:");
         c.insets = new Insets(0,20,0,20);
@@ -187,23 +187,23 @@ public class ListPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 1;
 
-        panel.add(carsRadioButton, c);
+        panel.add(oblRadioButton, c);
 
-        expressRadioButton = new JRadioButton("Города", false);
-        expressRadioButton.setBackground(Color.decode("#ffffff"));
-        expressRadioButton.setHorizontalAlignment(SwingConstants.LEFT);
-        expressRadioButton.addActionListener(new ActionListener() {
+        cityRadioButton = new JRadioButton("Города", false);
+        cityRadioButton.setBackground(Color.decode("#ffffff"));
+        cityRadioButton.setHorizontalAlignment(SwingConstants.LEFT);
+        cityRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 CardLayout cardLayout = (CardLayout) tablePanel.getLayout();
                 cardLayout.show(tablePanel, "CityTable");
-                carsTableFilterTextField.setVisible(false);
-                expressTableFilterTextField.setVisible(true);
-                expressTable.addMouseListener(new PopClickListener());
+                oblTableFilterTextField.setVisible(false);
+                cityTableFilterTextField.setVisible(true);
+                cityTable.addMouseListener(new PopClickListener());
                 activeTable = 1;
             }
         });
-        buttonGroup.add(expressRadioButton);
+        buttonGroup.add(cityRadioButton);
 
         c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.NORTH;
@@ -211,7 +211,7 @@ public class ListPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 2;
 
-        panel.add(expressRadioButton, c);
+        panel.add(cityRadioButton, c);
 
         c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.NORTHWEST;
@@ -253,7 +253,7 @@ public class ListPanel extends JPanel {
 
         int type = 0;
 
-        if (typeName.equals("CARS")) type = 1; else if(typeName.equals("EXPRESS")) type = 2;
+        if (typeName.equals("OBL")) type = 1; else if(typeName.equals("CITY")) type = 2;
 
         JPanel pane = new JPanel();
 
@@ -266,7 +266,7 @@ public class ListPanel extends JPanel {
         // Вектор с заголовками столбцов
         Vector<String> header = new Vector<String>();
 
-        ArrayList<Place> vehiclesList = type == 1 ? AppGUI.getOblList() : AppGUI.getCityList();
+        ArrayList<Place> placesList = type == 1 ? AppGUI.getOblList() : AppGUI.getCityList();
 
         Object[] columnsHeader;
         // Заголовки столбцов
@@ -282,11 +282,11 @@ public class ListPanel extends JPanel {
             model.addColumn(headerName);
         }
 
-        for (Place vehicle : vehiclesList) {
+        for (Place place : placesList) {
 
             Vector<String> row = new Vector<String>();
 
-            Object[] objects = vehicle.getObject();
+            Object[] objects = place.getObject();
 
             for (Object object : objects)
                 row.add((String) object);
@@ -313,46 +313,46 @@ public class ListPanel extends JPanel {
         return pane;
     }
     //Метод, добавляющий в таблицу строку
-    public void addPlace(String name, int i, int size, String s, int mark, int country) {
-        DefaultTableModel model = (DefaultTableModel) carsTable.getModel();
+    public void addPlace(String name, int size, int mark, int country) {
+        DefaultTableModel model = (DefaultTableModel) oblTable.getModel();
         model.addRow(new Object[]{name, size, mark, country});
     }
     //Метод, добавляющий в таблицу строку
     public void addPlace(String name, int size, int country, String mark) {
-        DefaultTableModel model = (DefaultTableModel) expressTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) cityTable.getModel();
         model.addRow(new Object[]{name, size, mark, country});
     }
 
     public void addSortToPane() {
 
-        TableRowSorter<TableModel> carsRowSorter = new TableRowSorter<>(carsTable.getModel());
-        TableRowSorter<TableModel> expressRowSorter = new TableRowSorter<>(expressTable.getModel());
+        TableRowSorter<TableModel> oblRowSorter = new TableRowSorter<>(oblTable.getModel());
+        TableRowSorter<TableModel> cityRowSorter = new TableRowSorter<>(cityTable.getModel());
 
-        carsTable.setRowSorter(carsRowSorter);
-        expressTable.setRowSorter(expressRowSorter);
+        oblTable.setRowSorter(oblRowSorter);
+        cityTable.setRowSorter(cityRowSorter);
 
         //noinspection DuplicatedCode
-        carsTableFilterTextField.getDocument().addDocumentListener(new DocumentListener(){
+        oblTableFilterTextField.getDocument().addDocumentListener(new DocumentListener(){
 
             @Override
             public void insertUpdate(DocumentEvent e) {
-                String text = carsTableFilterTextField.getText();
+                String text = oblTableFilterTextField.getText();
 
                 if (text.trim().length() == 0) {
-                    carsRowSorter.setRowFilter(null);
+                    oblRowSorter.setRowFilter(null);
                 } else {
-                    carsRowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                    oblRowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
                 }
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                String text = carsTableFilterTextField.getText();
+                String text = oblTableFilterTextField.getText();
 
                 if (text.trim().length() == 0) {
-                    carsRowSorter.setRowFilter(null);
+                    oblRowSorter.setRowFilter(null);
                 } else {
-                    carsRowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                    oblRowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
                 }
             }
 
@@ -363,27 +363,27 @@ public class ListPanel extends JPanel {
         });
 
         //noinspection DuplicatedCode
-        expressTableFilterTextField.getDocument().addDocumentListener(new DocumentListener(){
+        cityTableFilterTextField.getDocument().addDocumentListener(new DocumentListener(){
 
             @Override
             public void insertUpdate(DocumentEvent e) {
-                String text = expressTableFilterTextField.getText();
+                String text = cityTableFilterTextField.getText();
 
                 if (text.trim().length() == 0) {
-                    expressRowSorter.setRowFilter(null);
+                    cityRowSorter.setRowFilter(null);
                 } else {
-                    expressRowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                    cityRowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
                 }
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                String text = expressTableFilterTextField.getText();
+                String text = cityTableFilterTextField.getText();
 
                 if (text.trim().length() == 0) {
-                    expressRowSorter.setRowFilter(null);
+                    cityRowSorter.setRowFilter(null);
                 } else {
-                    expressRowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                    cityRowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
                 }
             }
 
@@ -394,9 +394,9 @@ public class ListPanel extends JPanel {
         });
     }
 
-    public void updateData(String oldName, String name, int speed, int weight, String color, int wheelsCount) {
+    public void updateData(String oldName, String name, int size, int mark, String country, int peopleCount) {
 
-        DefaultTableModel model = (DefaultTableModel) carsTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) oblTable.getModel();
 
         Integer row = AddPanel.getRow();
 
@@ -415,10 +415,10 @@ public class ListPanel extends JPanel {
 
         try {
             model.setValueAt(name, row, 0);
-            model.setValueAt(speed, row, 1);
-            model.setValueAt(weight, row, 2);
-            model.setValueAt(color, row, 3);
-            model.setValueAt(wheelsCount, row, 4);
+            model.setValueAt(size, row, 1);
+            model.setValueAt(mark, row, 2);
+            model.setValueAt(country, row, 3);
+            model.setValueAt(peopleCount, row, 4);
         } catch (NullPointerException error) {
             System.out.println(error);
         }
@@ -426,7 +426,7 @@ public class ListPanel extends JPanel {
 
     public void updateData(String oldName, String name, int size, int mark, String country, int peopleCount, String expressType) {
 
-        DefaultTableModel model = (DefaultTableModel) expressTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) cityTable.getModel();
 
         Integer row = AddPanel.getRow();
 

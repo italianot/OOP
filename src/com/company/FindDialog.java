@@ -149,9 +149,9 @@ public class FindDialog extends JDialog {
             Place vehicle;
 
             if (radioButtons[0].isSelected()) {
-                vehicle = AppGUI.findPlace(name, "CARS");
+                vehicle = AppGUI.findPlace(name, "OBL");
             } else if (radioButtons[1].isSelected()) {
-                vehicle = AppGUI.findPlace(name, "EXPRESS");
+                vehicle = AppGUI.findPlace(name, "CITY");
             } else {
                 vehicle = AppGUI.findPlace(name);
             }

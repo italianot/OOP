@@ -61,7 +61,7 @@ public class AppGUI extends JFrame {
     }
 
     public static ArrayList<Place> getOblList() {
-        return com.getCarsList();
+        return com.getOblList();
     }
 
     public static ArrayList<Place> getCityList() {
@@ -69,12 +69,12 @@ public class AppGUI extends JFrame {
     }
 
     public static void addPlace(String name, int size, int mark, String country, int peopleCount, int noise) {
-        com.addExpress(name, size,mark, country, peopleCount, noise);
-        listPanel.addPlace(name, size, mark, country, peopleCount, noise);
+        com.addMegapolis(name, size,mark, country, peopleCount, noise);
+        listPanel.addPlace(name, mark, peopleCount, noise);
     }
 
     public static void addPlace(String name, int size, int mark, String country) {
-        com.addCar(name, size, mark, country);
+        com.addObl(name, size, mark, country);
         listPanel.addPlace(name, size, mark, country);
     }
 
@@ -100,7 +100,7 @@ public class AppGUI extends JFrame {
     }
 
     public static void updatePlace(String oldName, String name, int size, int mark, String country, int peopleCount, String noise) {
-        com.updatePlace(oldName, name, size, mark, country, peopleCount, noise);
+        com.updatePlace(oldName, name, mark, peopleCount, noise);
         listPanel.updateData(oldName, name, size, mark, country, peopleCount, noise);
     }
 }

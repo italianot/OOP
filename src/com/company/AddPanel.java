@@ -142,7 +142,7 @@ public class AddPanel extends JPanel {
         panel.add(label, c);
 
         String[] labelNames = new String[] {
-                "Название:", "Размер, км^2:", "Оценка:", "Страна:", "Количество людей, тыс:", "Шум, дБ:"
+                "Название:", "Размер, км^2:", "Оценка:", "Страна:", "Плотность населения, чел/км^2:", "Шум, дБ:"
         };
         labelArray = new JLabel[labelNames.length];
         textFields = new JTextField[labelNames.length];
@@ -337,7 +337,7 @@ public class AddPanel extends JPanel {
             labelArray[5].setVisible(false);
             textFields[5].setVisible(false);
         } else if (index == 1) {
-            labelArray[4].setText("Количество людей:");
+            labelArray[4].setText("Количество людей, тыс:");
             labelArray[5].setVisible(true);
             textFields[5].setVisible(true);
         }
@@ -370,7 +370,7 @@ public class AddPanel extends JPanel {
         } else if (place instanceof Megapolis) {
             radioButtons[1].setSelected(true);
 
-            labelArray[4].setText("Количество людей:");
+            labelArray[4].setText("Количество людей, тыс:");
             labelArray[5].setVisible(true);
             textFields[5].setVisible(true);
 

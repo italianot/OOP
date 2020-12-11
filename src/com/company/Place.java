@@ -1,6 +1,7 @@
 package com.company;
 
 public abstract class Place {
+    protected int id;
     protected String name;
     protected int size;
     protected int mark;
@@ -32,5 +33,18 @@ public abstract class Place {
         this.mark = mark;
         this.country = country;
     }
+
+    public Place(int id, String name, int size, int mark, String country) {
+        this.id = id;
+        this.name = name;
+        this.size = size;
+        this.mark = mark;
+        this.country = country;
+    }
+
     public abstract void updatePlace(Object[] object);
+
+    public int getId() {
+        return id;
+    }
 }

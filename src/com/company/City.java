@@ -10,4 +10,8 @@ public abstract class City extends Place {
         //Заполняем поля этого класса
         this.peopleCount = peopleCount;
     }
+    public City(int id, String name, int size, int mark, String country, int peopleCount) {
+        super(id, name, size, mark, country);
+        this.peopleCount = peopleCount;
+    }
 }

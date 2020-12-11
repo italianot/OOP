@@ -35,12 +35,9 @@ public class MainPanel extends JPanel {
         //Зададим стандартные настройки кнопки для этой панели
         setButtonSetting(button);
         //Добавим обработчик для кнопки
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                CardLayout cardLayout = (CardLayout) AppGUI.getCardPane().getLayout();
-                cardLayout.show(AppGUI.getCardPane(), "List");
-            }
+        button.addActionListener(e -> {
+            CardLayout cardLayout = (CardLayout) AppGUI.getCardPane().getLayout();
+            cardLayout.show(AppGUI.getCardPane(), "List");
         });
         //Добавим кнопку в контейнер
         pane.add(button, constraints);
@@ -52,18 +49,15 @@ public class MainPanel extends JPanel {
         //Зададим стандартные настройки кнопки для этой панели
         setButtonSetting(button);
         //Добавим обработчик для кнопки
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!AddPanel.isSaved()) {
-                    AddPanel.clearFields();
-                }
-
-                AddPanel.toggleMode();
-
-                CardLayout cardLayout = (CardLayout) AppGUI.getCardPane().getLayout();
-                cardLayout.show(AppGUI.getCardPane(), "Add");
+        button.addActionListener(e -> {
+            if (!AddPanel.isSaved()) {
+                AddPanel.clearFields();
             }
+
+            AddPanel.toggleMode();
+
+            CardLayout cardLayout = (CardLayout) AppGUI.getCardPane().getLayout();
+            cardLayout.show(AppGUI.getCardPane(), "Add");
         });
         //Добавим кнопку в контейнер
         pane.add(button, constraints);

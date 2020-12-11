@@ -7,7 +7,9 @@ import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+//форма для добавления места
 public class AddPanel extends JPanel {
     //Создаем переменные для элементов
     private static JLabel[] labelArray;
@@ -249,14 +251,15 @@ public class AddPanel extends JPanel {
                     if (radioButtons[0].isSelected()) {
 
                         String name = textFields[0].getText();
-                        int speed = Integer.parseInt(textFields[1].getText());
-                        int weight = Integer.parseInt(textFields[2].getText());
+                        int size = Integer.parseInt(textFields[1].getText());
+                        int mark = Integer.parseInt(textFields[2].getText());
                         String country = textFields[3].getText();
+                        int density = Integer.parseInt(textFields[4].getText());
 
                         if (isEmpty(name) || isEmpty(country)) {
                             JOptionPane.showMessageDialog(null, msg,"Ошибка", JOptionPane.ERROR_MESSAGE);
                         } else {
-                            AppGUI.addPlace(name, speed, weight, country);
+                            AppGUI.addPlace(name, size, mark, country, density);
 
                             CardLayout cardLayout = (CardLayout) AppGUI.getCardPane().getLayout();
                             cardLayout.show(AppGUI.getCardPane(), "List");
@@ -264,16 +267,16 @@ public class AddPanel extends JPanel {
 
                     } else if(radioButtons[1].isSelected()) {
                         String name = textFields[0].getText();
-                        int speed = Integer.parseInt(textFields[1].getText());
-                        int weight = Integer.parseInt(textFields[2].getText());
-                        String color = textFields[3].getText();
-                        int railsCount = Integer.parseInt(textFields[4].getText());
+                        int size = Integer.parseInt(textFields[1].getText());
+                        int mark = Integer.parseInt(textFields[2].getText());
+                        String country = textFields[3].getText();
+                        int peopleCount = Integer.parseInt(textFields[4].getText());
                         int noise = Integer.parseInt(textFields[5].getText());
 
-                        if (isEmpty(name) || isEmpty(color) ) {
+                        if (isEmpty(name) || isEmpty(country) ) {
                             JOptionPane.showMessageDialog(null, msg,"Ошибка", JOptionPane.ERROR_MESSAGE);
                         } else {
-                            AppGUI.addPlace(name, speed, weight, color, railsCount, noise);
+                            AppGUI.addPlace(name, size, mark, country, peopleCount, noise);
 
                             CardLayout cardLayout = (CardLayout) AppGUI.getCardPane().getLayout();
                             cardLayout.show(AppGUI.getCardPane(), "List");
@@ -421,7 +424,7 @@ public class AddPanel extends JPanel {
         private final JLabel label;
         private String msg = "";
         private final String type;
-        private int limit = 10;
+        private final int limit;
         private String limitMsg;
 
         public DigitFilter(String type, JLabel label, int limitations) {

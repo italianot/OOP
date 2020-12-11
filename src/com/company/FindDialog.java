@@ -146,22 +146,22 @@ public class FindDialog extends JDialog {
 
             String name = getTextField().getText();
 
-            Place vehicle;
+            Place place;
 
             if (radioButtons[0].isSelected()) {
-                vehicle = AppGUI.findPlace(name, "OBL");
+                place = AppGUI.findPlace(name, "OBL");
             } else if (radioButtons[1].isSelected()) {
-                vehicle = AppGUI.findPlace(name, "CITY");
+                place = AppGUI.findPlace(name, "CITY");
             } else {
-                vehicle = AppGUI.findPlace(name);
+                place = AppGUI.findPlace(name);
             }
 
-            if (vehicle == null) {
+            if (place == null) {
                 JOptionPane.showMessageDialog(null, "Поиск не дал результатов");
             } else {
                 AddPanel.setCellPos(null, null);
 
-                AddPanel.fillFields(vehicle);
+                AddPanel.fillFields(place);
 
                 CardLayout cardLayout = (CardLayout) AppGUI.getCardPane().getLayout();
                 cardLayout.show(AppGUI.getCardPane(), "Add");

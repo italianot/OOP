@@ -67,6 +67,4 @@ public class PopUp  extends JPopupMenu {
 
         add(menuItem);
     }
-
-
 }

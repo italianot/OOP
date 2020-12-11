@@ -12,6 +12,14 @@ public class Megapolis extends City {
         this.noise = noise;
     }
 
+    public Megapolis(int id, String name, int size, int mark, String country, int peopleCount, int noise) {
+        //Передаем параметры в конструктор родителя
+        super(id, name, size, mark, country, peopleCount);
+        //Заполняем поля этого класса
+        this.noise = noise;
+    }
+
+
     @Override
     public Object[] getObject() {
         return new String[] {

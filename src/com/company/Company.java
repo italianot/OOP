@@ -1,5 +1,6 @@
 package com.company;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -9,6 +10,7 @@ public class Company {
         protected ArrayList<Place> cityList = new ArrayList<>();
         //Поле для получения случайного числа
         final Random rnd = new Random();
+        private Database db;
 
         //Поля для объектов
         protected String name;
@@ -20,17 +22,40 @@ public class Company {
 
         //Стандартный конструктор
         public Company() {
-            //Заполним список 10 случайными объектами
-            randomPlaces(5);
+            db = new Database();
+
+            try {
+                db.setConnection();
+
+                oblList = db.read("obl");
+
+                cityList = db.read("city");
+
+                db.close();
+            } catch (ClassNotFoundException | SQLException e) {
+                System.out.println("Подключение закрыто");
+            }
         }
 
         //Метод, добавляющий новое место в список - область
-        public void addObl(String name, int size, int mark, String country) {
+        public void addObl(String name, int size, int mark, String country, int density) {
             //Создаем объект класса Obl
-            Obl oblTmp = new Obl(name, size, mark, country, peopleCount);
+            Obl oblTmp = new Obl(name, size, mark, country, density);
             //Добавляем объект в список
-            oblList.add(oblTmp);
-            System.out.println("Место добавлено");
+
+            try {
+                db.setConnection();
+
+                db.add(name, size, mark, country, density);
+
+                oblList.add(oblTmp);
+                db.close();
+
+                System.out.println("Место добавлено");
+            } catch (ClassNotFoundException | SQLException e) {
+                System.out.println("Подключение закрыто");
+            }
+
         }
         //Метод, добавляющий новое место в список - мегаполис
         public void addMegapolis(String name, int size, int mark, String country, int peopleCount, int noise) {
@@ -38,11 +63,28 @@ public class Company {
             Megapolis megapolisTmp = new Megapolis(name, size, mark, country, peopleCount, noise);
             //Добавляем объект в список
             cityList.add(megapolisTmp);
-            System.out.println("Место добавлено");
+
+            try {
+                db.setConnection();
+
+                db.add(name, size, mark, country, peopleCount, noise);
+
+                cityList.add(megapolisTmp);
+                db.close();
+
+                System.out.println("Место добавлено");
+            } catch (ClassNotFoundException | SQLException e) {
+                System.out.println("Подключение закрыто");
+            }
         }
 
         public void randomPlaces(int count) {
-
+            String name;
+            int size;
+            int mark;
+            String country;
+            int peopleCount;
+            int noise;
             //Счетчики
             int oblCount = 0;
             int cityCount = 0;
@@ -53,7 +95,7 @@ public class Company {
                     case(0):
                         oblCount++;
                         //Заполним поля
-                        name = "Oblast " + oblCount;
+                        name = "Область " + oblCount;
                         size = rnd.nextInt(500) + 1200;
                         mark = rnd.nextInt(8) + 2;
                         country = rnd.nextInt(2) == 0 ? "Россия" : "США";
@@ -67,7 +109,7 @@ public class Company {
                     case(1):
                         cityCount++;
                         //Заполним поля
-                        name = "City " + cityCount;
+                        name = "Город " + cityCount;
                         size = rnd.nextInt(500)+ 500;
                         mark = rnd.nextInt(8) + 2;
                         country = rnd.nextInt(2) == 0 ? "Россия" : "США";
@@ -79,6 +121,9 @@ public class Company {
                         //Добавляем объект в список
                         cityList.add(megapolisTmp);
                         break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + rnd.nextInt(2));
+
                 }
             }
         }
@@ -150,6 +195,7 @@ public class Company {
         public void deletePlace(String name, String type) {
             boolean isFind = false;
             int index = 0;
+            Place place = null;
 
             ArrayList<Place> list = null;
 
@@ -169,6 +215,7 @@ public class Company {
                 if (nameTmp.equals(name)) {
                     //Получаем номер наденного объекта
                     index = list.indexOf(placeTmp);
+                    place = placeTmp;
                     //Ставим флаг, что найдено
                     isFind = true;
                 }
@@ -176,8 +223,22 @@ public class Company {
 
             if (isFind) {
                 //Удалить полученный объект
-                list.remove(index);
-                System.out.println("Место удалено");
+                try {
+                    db.setConnection();
+
+                    int id = place.getId();
+                    String placeType = place instanceof Obl ? "obl" : place instanceof City ? "city" : null;
+
+                    db.remove(id, placeType);
+
+                    list.remove(index);
+                    db.close();
+
+                    System.out.println("Место удалено");
+                } catch (ClassNotFoundException | SQLException e) {
+                    System.out.println("Подключение закрыто");
+                }
+
             } else {
                 System.out.println("Место не найдено");
             }
@@ -199,7 +260,21 @@ public class Company {
             if (place != null) {
                 Object[] object = {name, size, mark, country, peopleCount};
 
-                place.updatePlace(object);
+                try {
+                    db.setConnection();
+
+                    int id = place.getId();
+
+                    db.update(id, name, size, mark, country, peopleCount);
+
+                    place.updatePlace(object);
+
+                    db.close();
+
+
+                } catch (ClassNotFoundException | SQLException e) {
+                    System.out.println("Подключение закрыто");
+                }
             }
         }
 
@@ -217,9 +292,23 @@ public class Company {
             }
 
             if (place != null) {
-                Object[] object = {name, size, mark, country, railsCount, noise};
+                Object[] object = {name, size, mark, country, peopleCount, noise};
 
-                place.updatePlace(object);
+                try {
+                    db.setConnection();
+
+                    int id = place.getId();
+
+                    db.update(id, name, size, mark, country, peopleCount, noise);
+
+                    place.updatePlace(object);
+
+                    db.close();
+
+
+                } catch (ClassNotFoundException | SQLException e) {
+                    System.out.println("Подключение закрыто");
+                }
             }
         }
 

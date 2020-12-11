@@ -11,18 +11,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Vector;
-
+// форма с таблицей
 public class ListPanel extends JPanel {
 
     //Необходимые поля
     private int buttonCount = 0;
-    private final JPanel tablePanel = new JPanel();
+    private static final JPanel tablePanel = new JPanel();
     private static final JTable oblTable = new JTable();
     private static final JTable cityTable = new JTable();
-    private final JTextField oblTableFilterTextField = new JTextField();
-    private final JTextField cityTableFilterTextField = new JTextField();
-    private JRadioButton oblRadioButton;
-    private JRadioButton cityRadioButton;
+    private static final JTextField oblTableFilterTextField = new JTextField();
+    private static final JTextField cityTableFilterTextField = new JTextField();
+    private static JRadioButton oblRadioButton;
+    private static JRadioButton cityRadioButton;
     private static int activeTable;
     private static JLabel title;
 
@@ -123,12 +123,12 @@ public class ListPanel extends JPanel {
 
         button = new JButton("Меню");
         setButtonSetting(button);
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                CardLayout cardLayout = (CardLayout) AppGUI.getCardPane().getLayout();
-                cardLayout.show(AppGUI.getCardPane(), "Menu");
-            }
+        button.addActionListener(e -> {
+            oblTableFilterTextField.setText("");
+            cityTableFilterTextField.setText("");
+
+            CardLayout cardLayout = (CardLayout) AppGUI.getCardPane().getLayout();
+            cardLayout.show(AppGUI.getCardPane(), "Menu");
         });
         setLayoutSetting(c);
 
@@ -161,17 +161,7 @@ public class ListPanel extends JPanel {
         oblRadioButton = new JRadioButton("Области", true);
         oblRadioButton.setBackground(Color.decode("#ffffff"));
         oblRadioButton.setHorizontalAlignment(SwingConstants.LEFT);
-        oblRadioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                CardLayout cardLayout = (CardLayout) tablePanel.getLayout();
-                cardLayout.show(tablePanel, "OblTable");
-                oblTableFilterTextField.setVisible(true);
-                cityTableFilterTextField.setVisible(false);
-                oblTable.addMouseListener(new PopClickListener());
-                activeTable = 0;
-            }
-        });
+        oblRadioButton.addActionListener(e -> setOblVisible());
         buttonGroup.add(oblRadioButton);
 
         label = new JLabel("Выбрать:");
@@ -192,17 +182,8 @@ public class ListPanel extends JPanel {
         cityRadioButton = new JRadioButton("Города", false);
         cityRadioButton.setBackground(Color.decode("#ffffff"));
         cityRadioButton.setHorizontalAlignment(SwingConstants.LEFT);
-        cityRadioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                CardLayout cardLayout = (CardLayout) tablePanel.getLayout();
-                cardLayout.show(tablePanel, "CityTable");
-                oblTableFilterTextField.setVisible(false);
-                cityTableFilterTextField.setVisible(true);
-                cityTable.addMouseListener(new PopClickListener());
-                activeTable = 1;
-            }
-        });
+        cityRadioButton.addActionListener(e -> setCityVisible());
+        buttonGroup.add(cityRadioButton);
         buttonGroup.add(cityRadioButton);
 
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -313,14 +294,14 @@ public class ListPanel extends JPanel {
         return pane;
     }
     //Метод, добавляющий в таблицу строку
-    public void addPlace(String name, int size, int mark, int country) {
+    public void addObl(String name, int size, int mark, String country, int density) {
         DefaultTableModel model = (DefaultTableModel) oblTable.getModel();
-        model.addRow(new Object[]{name, size, mark, country});
+        model.addRow(new Object[]{name, size, mark, country, density});
     }
     //Метод, добавляющий в таблицу строку
-    public void addPlace(String name, int size, int country, String mark) {
+    public void addCity(String name, int size, int mark, String country, int peopleCount, int noise) {
         DefaultTableModel model = (DefaultTableModel) cityTable.getModel();
-        model.addRow(new Object[]{name, size, mark, country});
+        model.addRow(new Object[]{name, size, mark, country, peopleCount, noise});
     }
 
     public void addSortToPane() {
@@ -431,10 +412,10 @@ public class ListPanel extends JPanel {
         Integer row = AddPanel.getRow();
 
         if (row == null) {
-            Vector<Vector> vector = model.getDataVector();
+            Vector vector = model.getDataVector();
 
             for (int i = 0, vectorSize = vector.size(); i < vectorSize; i++) {
-                Vector vectorTmp = vector.get(i);
+                Vector vectorTmp = (Vector) vector.get(i);
                 String nameTmp = vectorTmp.get(0).toString();
 
                 if (oldName.equals(nameTmp)) row = i;
@@ -454,4 +435,25 @@ public class ListPanel extends JPanel {
             System.out.println(error);
         }
     }
+
+    public static void setOblVisible() {
+        oblRadioButton.setSelected(true);
+        CardLayout cardLayout = (CardLayout) tablePanel.getLayout();
+        cardLayout.show(tablePanel, "OblTable");
+        oblTableFilterTextField.setVisible(true);
+        cityTableFilterTextField.setVisible(false);
+        oblTable.addMouseListener(new PopClickListener());
+        activeTable = 0;
+    }
+
+    public static void setCityVisible() {
+        cityRadioButton.setSelected(true);
+        CardLayout cardLayout = (CardLayout) tablePanel.getLayout();
+        cardLayout.show(tablePanel, "CityTable");
+        oblTableFilterTextField.setVisible(false);
+        cityTableFilterTextField.setVisible(true);
+        cityTable.addMouseListener(new PopClickListener());
+        activeTable = 1;
+    }
+
 }

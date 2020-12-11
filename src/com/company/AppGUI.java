@@ -3,7 +3,7 @@ package com.company;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-
+//начальный экран\форма
 public class AppGUI extends JFrame {
 
     //Объект класса-группы
@@ -70,12 +70,12 @@ public class AppGUI extends JFrame {
 
     public static void addPlace(String name, int size, int mark, String country, int peopleCount, int noise) {
         com.addMegapolis(name, size,mark, country, peopleCount, noise);
-        listPanel.addPlace(name, mark, peopleCount, noise);
+        listPanel.addCity(name, size, mark, country, peopleCount, noise);
     }
 
-    public static void addPlace(String name, int size, int mark, String country) {
-        com.addObl(name, size, mark, country);
-        listPanel.addPlace(name, size, mark, country);
+    public static void addPlace(String name, int size, int mark, String country, int density) {
+        com.addObl(name, size, mark, country, density);
+        listPanel.addObl(name, size, mark, country, density);
     }
 
     public static JPanel getCardPane() {

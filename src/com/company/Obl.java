@@ -5,9 +5,15 @@ public class Obl extends Place {
     private int density = 0;
 
     //Стандартный конструктор
-    public Obl(String name, int speed, int mark, String country, int density) {
+    public Obl(String name, int size, int mark, String country, int density) {
         //Передаем параметры в конструктор родителя
-        super(name, speed, mark, country);
+        super(name, size, mark, country);
+        //Заполняем поля этого класса
+        this.density = density;
+    }
+    public Obl(int id, String name, int size, int mark, String country, int density) {
+        //Передаем параметры в конструктор родителя
+        super(id, name, size, mark, country);
         //Заполняем поля этого класса
         this.density = density;
     }
